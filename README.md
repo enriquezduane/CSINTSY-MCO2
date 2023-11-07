@@ -1,5 +1,5 @@
 # Family Tree Chatbot
-
+Docs for logic [here](https://docs.google.com/document/d/1NJgKqkEz2Ws2LSiDU8hu9QLL-gh2Mqj0dkFrKy_5y58/edit?usp=sharing)
 ## Install Prolog
 
 Download and install Prolog from [here](https://www.swi-prolog.org/Download.html).
