@@ -141,12 +141,6 @@ query_relative(Relative1, Relative2) :-
 
 
 % helper definitions
-print_children([]) :-
-  writeln('There are no children.').
-print_children(Children) :-
-  writeln('The children are:'),
-  print_list(Children).
-
 print_siblings([]) :-
   writeln('There are no siblings.').
 print_siblings(Siblings) :-
@@ -176,6 +170,12 @@ print_sons([]) :-
 print_sons(Sons) :-
   writeln('The sons are:'),
   print_list(Sons).
+
+print_children([]) :-
+  writeln('There are no children.').
+print_children(Children) :-
+  writeln('The children are:'),
+  print_list(Children).
 
 print_list([]).
 print_list([Head|Tail]) :-
