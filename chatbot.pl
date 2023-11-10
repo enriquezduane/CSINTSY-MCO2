@@ -33,12 +33,6 @@ parse_input(Input, List) :-
 
 
 % query commands (query commands are placed before statement commands because of the way Prolog searches for predicates)
-execute_command(["is", Male, "a", "male?"]) :-
-  query_male(Male), !. 
-
-execute_command(["add male", Male]) :-
-  add_male(Male), !. 
-
 execute_command(["is", Female, "a", "female?"]) :-
   query_male(Female), !. 
   
