@@ -8,10 +8,8 @@ child/2, son/2, daughter/2, uncle/2, aunt/2, relative/2, male/1, female/1.
 
 % relationship definitions
 sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.
-sibling(X, Y) :- brother(X, Y) ; brother(Y, X) ; sister(X, Y) ; sister(Y, X).
 brother(X, Y) :- male(X), sibling(X, Y).
 sister(X, Y) :- female(X), sibling(X, Y).
-parent(X, Y) :- father(X, Y) ; mother(X, Y).
 father(X, Y) :- male(X), parent(X, Y).
 mother(X, Y) :- female(X), parent(X, Y).
 grandfather(X, Y) :- father(X, Z), parent(Z, Y).

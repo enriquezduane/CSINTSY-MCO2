@@ -7,61 +7,89 @@ add_mother/2, add_parents/3,add_grandmother/2, add_grandfather/2, add_child/2, a
 add_sibling(Sibling1, Sibling2) :-
   (   sibling(Sibling1, Sibling2)
   ->  writeln('That relationship already exists.')
-  ;   assertz(sibling(Sibling1, Sibling2)), assertz(sibling(Sibling2, Sibling1)), writeln('New relationship added.')
+  ;   assertz(sibling(Sibling1, Sibling2)), 
+      assertz(sibling(Sibling2, Sibling1)), 
+      writeln('New relationship added.')
   ).
 
 add_brother(Brother, Sibling) :-
   (   brother(Brother, Sibling)
   ->  writeln('That relationship already exists.')
-  ;   assertz(male(Brother)), assertz(brother(Brother, Sibling)), writeln('New relationship added.')
+  ;   \+ male(Brother) -> assertz(male(Brother)), 
+      \+ sibling(Brother, Sibling) -> assertz(sibling(Brother, Sibling)), 
+      \+ sibling(Sibling, Brother) -> assertz(sibling(Sibling, Brother)), 
+      assertz(brother(Brother, Sibling)), 
+      writeln('New relationship added.')
   ).
 
 add_sister(Sister, Sibling) :-
   (   sister(Sister, Sibling)
   ->  writeln('That relationship already exists.')
-  ;   assertz(female(Sister)), assertz(sister(Sister, Sibling)), writeln('New relationship added.')
+  ;   \+ female(Sister) -> assertz(female(Sister)), 
+      \+ sibling(Sister, Sibling) -> assertz(sibling(Sister, Sibling)), 
+      \+ sibling(Sibling, Sister) -> assertz(sibling(Sibling, Sister)), 
+      assertz(sister(Sister, Sibling)), 
+      writeln('New relationship added.')
   ).
 
 add_father(Father, Child) :-
   (   father(Father, Child)
   ->  writeln('That relationship already exists.')
-  ;   assertz(male(Father)), assertz(parent(Father, Child)), assertz(father(Father, Child)), writeln('New relationship added.')
+  ;   \+ male(Father) -> assertz(male(Father)), 
+      \+ parent(Father, Child) -> assertz(parent(Father, Child)), 
+      assertz(father(Father, Child)), 
+      writeln('New relationship added.')
   ).
 
 add_mother(Mother, Child) :-
   (   mother(Mother, Child)
   ->  writeln('That relationship already exists.')
-  ;   assertz(female(Mother)), assertz(parent(Mother, Child)), assertz(mother(Mother, Child)), writeln('New relationship added.')
+  ;   \+ female(Mother) -> assertz(female(Mother)), 
+      \+ parent(Mother, Child) -> assertz(parent(Mother, Child)), 
+      assertz(mother(Mother, Child)), 
+      writeln('New relationship added.')
   ).
 
 add_parents(Parent1, Parent2, Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child)
   ->  writeln('That relationship already exists.')
-  ;   assertz(parent(Parent1, Child)), assertz(parent(Parent2, Child)), writeln('New relationship added.')
+  ;   assertz(parent(Parent1, Child)), 
+      assertz(parent(Parent2, Child)), 
+      writeln('New relationship added.')
   ).
 
 add_grandmother(Grandmother, Grandchild) :-
   (   grandmother(Grandmother, Grandchild)
   ->  writeln('That relationship already exists.')
-  ;   assertz(female(Grandmother)), assertz(grandmother(Grandmother, Grandchild)), writeln('New relationship added.')
+  ;   \+ female(Grandmother) -> assertz(female(Grandmother)), 
+      assertz(grandmother(Grandmother, Grandchild)), 
+      writeln('New relationship added.')
   ).
 
 add_grandfather(Grandfather, Grandchild) :-
   (   grandfather(Grandfather, Grandchild)
   ->  writeln('That relationship already exists.')
-  ;   assertz(male(Grandfather)), assertz(grandfather(Grandfather, Grandchild)), writeln('New relationship added.')
+  ;   \+ male(Grandfather) -> assertz(male(Grandfather)), 
+      assertz(grandfather(Grandfather, Grandchild)), 
+      writeln('New relationship added.')
   ).
 
 add_daughter(Daughter, Parent) :-
   (   daughter(Daughter, Parent)
   ->  writeln('That relationship already exists.')
-  ;   assertz(female(Daughter)), assertz(daughter(Daughter, Parent)), assertz(parent(Parent, Daughter)), writeln('New relationship added.')
+  ;   \+ female(Daughter) -> assertz(female(Daughter)), 
+      \+ parent(Parent, Daughter) -> assertz(parent(Parent, Daughter)),
+      assertz(daughter(Daughter, Parent)), 
+      writeln('New relationship added.')
   ).
 
 add_son(Son, Parent) :-
   (   son(Son, Parent)
   ->  writeln('That relationship already exists.')
-  ;   assertz(male(Son)), assertz(son(Son, Parent)), assertz(parent(Parent, Son)), writeln('New relationship added.')
+  ;   \+ male(Son) -> assertz(male(Son)), 
+      \+ parent(Parent, Son) -> assertz(parent(Parent, Son)), 
+      assertz(son(Son, Parent)),
+      writeln('New relationship added.')
   ).
 
 add_child(Child, Parent) :-
@@ -75,12 +103,15 @@ add_child(Child, Parent) :-
 add_uncle(Uncle, NieceNephew) :-
   (   uncle(Uncle, NieceNephew)
   ->  writeln('That relationship already exists.')
-  ;   assertz(male(Uncle)), assertz(uncle(Uncle, NieceNephew)), writeln('New relationship added.')
+  ;   \+ male(Uncle) -> assertz(male(Uncle)), 
+      assertz(uncle(Uncle, NieceNephew)), 
+      writeln('New relationship added.')
   ).
 
 add_aunt(Aunt, NieceNephew) :-
   (   aunt(Aunt, NieceNephew)
   ->  writeln('That relationship already exists.')
-  ;   assertz(female(Aunt)), assertz(aunt(Aunt, NieceNephew)), writeln('New relationship added.')
+  ;   \+ female(Aunt) -> assertz(female(Aunt)), 
+      assertz(aunt(Aunt, NieceNephew)), 
+      writeln('New relationship added.')
   ).
-
