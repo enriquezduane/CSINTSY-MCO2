@@ -2,11 +2,24 @@
 :- module(questions, [query_sibling/2, query_sibling/1, query_sister/2, query_sister/1, query_brother/2, query_brother/1, 
 query_mother/2, query_mother/1, query_father/2, query_father/1, query_parents/3, query_parents/1,
 query_grandfather/2, query_grandmother/2, query_daughter/2, query_daughter/1, query_son/2, query_son/1, 
-query_child/2, query_child/1, query_child/4, query_uncle/2, query_aunt/2, query_relative]).
+query_child/2, query_child/1, query_child/4, query_uncle/2, query_aunt/2, query_relative/2, query_male/1, query_female/1]).
 
 :- use_module(logic).
 
 % query definitions
+query_male(Male) :-
+  (   male(Male)
+  ->  writeln('Yes, that is correct.')
+  ;   writeln('No, that is not correct.')
+  ).
+
+query_female(Female) :-
+  (   female(Female)
+  ->  writeln('Yes, that is correct.')
+  ;   writeln('No, that is not correct.')
+  ).
+
+
 query_sibling(Sibling1, Sibling2) :-
   (   sibling(Sibling1, Sibling2)
   ->  writeln('Yes, that is correct.')
@@ -25,7 +38,7 @@ query_sister(Sister, Sibling) :-
 
 query_sister(Sibling) :-
   findall(Sister, sister(Sister, Sibling), Sisters),
-  print_siblings(Sisters).
+  print_sisters(Sisters).
   
 query_brother(Brother, Sibling) :-
   (   brother(Brother, Sibling)
@@ -35,7 +48,7 @@ query_brother(Brother, Sibling) :-
 
 query_brother(Sibling) :-
   findall(Brother, brother(Brother, Sibling), Brothers),
-  print_siblings(Brothers).
+  print_brothers(Brothers).
 
 query_mother(Mother, Child) :-
   (   mother(Mother, Child)
@@ -66,7 +79,7 @@ query_parents(Parent1, Parent2, Child) :-
   ->  writeln('Yes, that is correct.')
   ;   writeln('No, that is not correct.')
   ).
-
+  
 query_parents(Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child), Parent1 \= Parent2
   ->  write('The parents of '), write(Child), write(' are '), write(Parent1), write(' and '), write(Parent2), writeln('.')
@@ -143,7 +156,7 @@ query_relative(Relative1, Relative2) :-
 % helper definitions
 print_siblings([]) :-
   writeln('There are no siblings.').
-print_siblings(Siblings) :-
+print_siblings([Siblings]) :-
   writeln('The siblings are:'),
   print_list(Siblings).
 

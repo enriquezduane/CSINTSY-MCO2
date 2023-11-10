@@ -3,12 +3,14 @@
 :- use_module(utils/statements).
 :- use_module(utils/questions).
 
+
 % entry point
 start :-
   writeln('Welcome to the Prolog Family Tree!'),
   writeln('Type "quit" to exit.'),
   main_loop,
   writeln('Goodbye!').
+
 
 % main loop for command prompt
 main_loop :-
@@ -18,16 +20,25 @@ main_loop :-
   process_input(Input),
   Input == "quit".
 
+
 % process user input
 process_input(Input) :-
   parse_input(Input, Parsed),
   execute_command(Parsed).
 
+
 % parses input into a list of words
 parse_input(Input, List) :-
   split_string(Input, " ", "", List).
 
-% query commands
+
+% query commands (query commands are placed before statement commands because of the way Prolog searches for predicates)
+execute_command(["male", Male]) :-
+  query_male(Male), !. 
+
+execute_command(["female", Female]) :-
+  query_male(Female), !. 
+  
 execute_command(["are", Sibling1, "and", Sibling2, "siblings?"]) :-
   query_sibling(Sibling1, Sibling2), !.
 
@@ -150,9 +161,11 @@ execute_command([Aunt, "is", "an", "aunt", "of", NieceNephew]) :-
 execute_command(["quit"]) :-
   true, !.
 
+
 % if it could not identify the chat pattern, this will be executed
 execute_command(_) :-
   writeln('I do not understand').
+
 
 % run the chatbot
 :- start.
