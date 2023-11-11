@@ -15,9 +15,18 @@ add_sibling(Sibling1, Sibling2) :-
 add_brother(Brother, Sibling) :-
   (   brother(Brother, Sibling)
   ->  writeln('That relationship already exists.')
-  ;   \+ male(Brother) -> assertz(male(Brother)), 
-      \+ sibling(Brother, Sibling) -> assertz(sibling(Brother, Sibling)), 
-      \+ sibling(Sibling, Brother) -> assertz(sibling(Sibling, Brother)), 
+  ;   ( \+ male(Brother) 
+      -> assertz(male(Brother))
+      ;  true
+      ),
+      ( \+ sibling(Brother, Sibling) 
+      -> assertz(sibling(Brother, Sibling))
+      ;  true
+      ),
+      ( \+ sibling(Sibling, Brother) 
+      -> assertz(sibling(Sibling, Brother))
+      ;  true
+      ),
       assertz(brother(Brother, Sibling)), 
       writeln('OK! I learned something.')
   ).
@@ -25,9 +34,18 @@ add_brother(Brother, Sibling) :-
 add_sister(Sister, Sibling) :-
   (   sister(Sister, Sibling)
   ->  writeln('That relationship already exists.')
-  ;   \+ female(Sister) -> assertz(female(Sister)), 
-      \+ sibling(Sister, Sibling) -> assertz(sibling(Sister, Sibling)), 
-      \+ sibling(Sibling, Sister) -> assertz(sibling(Sibling, Sister)), 
+  ;   ( \+ female(Sister) 
+      -> assertz(female(Sister))
+      ;  true
+      ),
+      ( \+ sibling(Sister, Sibling) 
+      -> assertz(sibling(Sister, Sibling))
+      ;  true
+      ),
+      ( \+ sibling(Sibling, Sister) 
+      -> assertz(sibling(Sibling, Sister))
+      ;  true
+      ),
       assertz(sister(Sister, Sibling)), 
       writeln('OK! I learned something.')
   ).
@@ -35,8 +53,14 @@ add_sister(Sister, Sibling) :-
 add_father(Father, Child) :-
   (   father(Father, Child)
   ->  writeln('That relationship already exists.')
-  ;   \+ male(Father) -> assertz(male(Father)), 
-      \+ parent(Father, Child) -> assertz(parent(Father, Child)), 
+  ;   ( \+ male(Father) 
+      -> assertz(male(Father))
+      ;  true
+      ),
+      ( \+ parent(Father, Child) 
+      -> assertz(parent(Father, Child))
+      ;  true
+      ),
       assertz(father(Father, Child)), 
       writeln('OK! I learned something.')
   ).
@@ -44,8 +68,14 @@ add_father(Father, Child) :-
 add_mother(Mother, Child) :-
   (   mother(Mother, Child)
   ->  writeln('That relationship already exists.')
-  ;   \+ female(Mother) -> assertz(female(Mother)), 
-      \+ parent(Mother, Child) -> assertz(parent(Mother, Child)), 
+  ;   ( \+ female(Mother) 
+      -> assertz(female(Mother))
+      ;  true
+      ),
+      ( \+ parent(Mother, Child) 
+      -> assertz(parent(Mother, Child))
+      ;  true
+      ),
       assertz(mother(Mother, Child)), 
       writeln('OK! I learned something.')
   ).
@@ -61,7 +91,10 @@ add_parents(Parent1, Parent2, Child) :-
 add_grandmother(Grandmother, Grandchild) :-
   (   grandmother(Grandmother, Grandchild)
   ->  writeln('That relationship already exists.')
-  ;   \+ female(Grandmother) -> assertz(female(Grandmother)), 
+  ;   ( \+ female(Grandmother) 
+      -> assertz(female(Grandmother))
+      ;  true
+      ),
       assertz(grandmother(Grandmother, Grandchild)), 
       writeln('OK! I learned something.')
   ).
@@ -69,7 +102,10 @@ add_grandmother(Grandmother, Grandchild) :-
 add_grandfather(Grandfather, Grandchild) :-
   (   grandfather(Grandfather, Grandchild)
   ->  writeln('That relationship already exists.')
-  ;   \+ male(Grandfather) -> assertz(male(Grandfather)), 
+  ;   ( \+ male(Grandfather) 
+      -> assertz(male(Grandfather))
+      ;  true
+      ),
       assertz(grandfather(Grandfather, Grandchild)), 
       writeln('OK! I learned something.')
   ).
@@ -77,8 +113,14 @@ add_grandfather(Grandfather, Grandchild) :-
 add_daughter(Daughter, Parent) :-
   (   daughter(Daughter, Parent)
   ->  writeln('That relationship already exists.')
-  ;   \+ female(Daughter) -> assertz(female(Daughter)), 
-      \+ parent(Parent, Daughter) -> assertz(parent(Parent, Daughter)),
+  ;   ( \+ female(Daughter) 
+      -> assertz(female(Daughter))
+      ;  true
+      ),
+      ( \+ parent(Parent, Daughter) 
+      -> assertz(parent(Parent, Daughter))
+      ;  true
+      ),
       assertz(daughter(Daughter, Parent)), 
       writeln('OK! I learned something.')
   ).
@@ -86,8 +128,14 @@ add_daughter(Daughter, Parent) :-
 add_son(Son, Parent) :-
   (   son(Son, Parent)
   ->  writeln('That relationship already exists.')
-  ;   \+ male(Son) -> assertz(male(Son)), 
-      \+ parent(Parent, Son) -> assertz(parent(Parent, Son)), 
+  ;   ( \+ male(Son) 
+      -> assertz(male(Son))
+      ;  true
+      ),
+      ( \+ parent(Parent, Son) 
+      -> assertz(parent(Parent, Son))
+      ;  true
+      ),
       assertz(son(Son, Parent)),
       writeln('OK! I learned something.')
   ).
@@ -105,7 +153,10 @@ add_child(Child, Parent) :-
 add_uncle(Uncle, NieceNephew) :-
   (   uncle(Uncle, NieceNephew)
   ->  writeln('That relationship already exists.')
-  ;   \+ male(Uncle) -> assertz(male(Uncle)), 
+  ;   ( \+ male(Uncle) 
+      -> assertz(male(Uncle))
+      ;  true
+      ),
       assertz(uncle(Uncle, NieceNephew)), 
       writeln('OK! I learned something.')
   ).
@@ -113,7 +164,10 @@ add_uncle(Uncle, NieceNephew) :-
 add_aunt(Aunt, NieceNephew) :-
   (   aunt(Aunt, NieceNephew)
   ->  writeln('That relationship already exists.')
-  ;   \+ female(Aunt) -> assertz(female(Aunt)), 
+  ;   ( \+ female(Aunt) 
+      -> assertz(female(Aunt))
+      ;  true
+      ),
       assertz(aunt(Aunt, NieceNephew)), 
       writeln('OK! I learned something.')
   ).
