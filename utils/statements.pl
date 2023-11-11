@@ -3,7 +3,6 @@
 add_mother/2, add_parents/3, add_grandmother/2, add_grandfather/2, add_child/2, add_daughter/2, add_son/2, add_uncle/2, add_aunt/2]).
 
 % statement definitions (Fix their logic by replacing the relationship condition used)
-
 add_sibling(Sibling1, Sibling2) :-
   (   sibling(Sibling1, Sibling2)
   ->  writeln('That relationship already exists.')
@@ -143,8 +142,11 @@ add_son(Son, Parent) :-
 add_child(Child, Parent) :-
   (   child(Child, Parent)
   ->  writeln('That relationship already exists.')
-  ;   assertz(child(Child, Parent)), 
-      assertz(parent(Parent, Child)), 
+  ;   ( \+ parent(Parent, Child)
+      -> assertz(parent(Parent, Child))
+      ;  true
+      ),
+      assertz(child(Child, Parent)), 
       writeln('OK! I learned something.')
   ).
 
