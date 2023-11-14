@@ -1,11 +1,14 @@
 % defines the module and export the predicates to be used by other files.
 :- module(statements, [ add_sibling/2, add_brother/2, add_sister/2, add_father/2,
-add_mother/2, add_parents/3, add_grandmother/2, add_grandfather/2, add_child/2, add_daughter/2, add_son/2, add_uncle/2, add_aunt/2]).
+add_mother/2, add_parents/3, add_grandmother/2, add_grandfather/2, add_child/2, add_children/3, add_children/2, 
+add_daughter/2, add_son/2, add_uncle/2, add_aunt/2]).
 
 % statement definitions (Fix their logic by replacing the relationship condition used)
 add_sibling(Sibling1, Sibling2) :-
   (   sibling(Sibling1, Sibling2)
   ->  writeln('That relationship already exists.')
+  ;   impossible_sibling(Sibling1, Sibling2)
+  ->  writeln('That is impossible!')
   ;   assertz(sibling(Sibling1, Sibling2)), 
       assertz(sibling(Sibling2, Sibling1)), 
       writeln('OK! I learned something.')
@@ -14,6 +17,8 @@ add_sibling(Sibling1, Sibling2) :-
 add_brother(Brother, Sibling) :-
   (   brother(Brother, Sibling)
   ->  writeln('That relationship already exists.')
+  ;   impossible_brother(Brother, Sibling)
+  ->  writeln('That is impossible!')
   ;   ( \+ male(Brother) 
       -> assertz(male(Brother))
       ;  true
@@ -33,6 +38,8 @@ add_brother(Brother, Sibling) :-
 add_sister(Sister, Sibling) :-
   (   sister(Sister, Sibling)
   ->  writeln('That relationship already exists.')
+  ;   impossible_sister(Sister, Sibling)
+  ->  writeln('That is impossible!')
   ;   ( \+ female(Sister) 
       -> assertz(female(Sister))
       ;  true
@@ -52,6 +59,8 @@ add_sister(Sister, Sibling) :-
 add_father(Father, Child) :-
   (   father(Father, Child)
   ->  writeln('That relationship already exists.')
+  ;   impossible_father(Father, Child)
+  ->  writeln('That is impossible!')
   ;   ( \+ male(Father) 
       -> assertz(male(Father))
       ;  true
@@ -67,6 +76,8 @@ add_father(Father, Child) :-
 add_mother(Mother, Child) :-
   (   mother(Mother, Child)
   ->  writeln('That relationship already exists.')
+  ;   impossible_mother(Mother, Child)
+  ->  writeln('That is impossible!')
   ;   ( \+ female(Mother) 
       -> assertz(female(Mother))
       ;  true
@@ -82,6 +93,8 @@ add_mother(Mother, Child) :-
 add_parents(Parent1, Parent2, Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child)
   ->  writeln('That relationship already exists.')
+  ;   impossible_parent(Parent1, Parent2, Child)
+  ->  writeln('That is impossible!')
   ;   assertz(parent(Parent1, Child)), 
       assertz(parent(Parent2, Child)), 
       writeln('OK! I learned something.')
@@ -90,6 +103,8 @@ add_parents(Parent1, Parent2, Child) :-
 add_grandmother(Grandmother, Grandchild) :-
   (   grandmother(Grandmother, Grandchild)
   ->  writeln('That relationship already exists.')
+  ;   impossible_grandmother(Grandmother, Grandchild)
+  ->  writeln('That is impossible!')
   ;   ( \+ female(Grandmother) 
       -> assertz(female(Grandmother))
       ;  true
@@ -101,6 +116,8 @@ add_grandmother(Grandmother, Grandchild) :-
 add_grandfather(Grandfather, Grandchild) :-
   (   grandfather(Grandfather, Grandchild)
   ->  writeln('That relationship already exists.')
+  ;   impossible_grandfather(Grandfather, Grandchild)
+  ->  writeln('That is impossible!')
   ;   ( \+ male(Grandfather) 
       -> assertz(male(Grandfather))
       ;  true
@@ -112,6 +129,8 @@ add_grandfather(Grandfather, Grandchild) :-
 add_daughter(Daughter, Parent) :-
   (   daughter(Daughter, Parent)
   ->  writeln('That relationship already exists.')
+  ;   daughter(Daughter, Parent)
+  ->  writeln('That is impossible!')
   ;   ( \+ female(Daughter) 
       -> assertz(female(Daughter))
       ;  true
@@ -127,6 +146,8 @@ add_daughter(Daughter, Parent) :-
 add_son(Son, Parent) :-
   (   son(Son, Parent)
   ->  writeln('That relationship already exists.')
+  ;   son(Son, Parent)
+  ->  writeln('That is impossible!')
   ;   ( \+ male(Son) 
       -> assertz(male(Son))
       ;  true
@@ -142,19 +163,44 @@ add_son(Son, Parent) :-
 add_child(Child, Parent) :-
   (   child(Child, Parent)
   ->  writeln('That relationship already exists.')
+  ;   impossible_child(Child, Parent)
+  ->  writeln('That is impossible!')
   ;   ( \+ parent(Parent, Child)
       -> assertz(parent(Parent, Child))
       ;  true
       ),
-      assertz(child(Child, Parent)), 
       writeln('OK! I learned something.')
+  ).  
+
+add_children([], Parent, Children) :- 
+  add_children(Children, Parent),
+  writeln('OK! I learned something.').
+
+add_children([""|Rest], Parent, Children) :- add_children(Rest, Parent, Children).
+add_children(["and"|Rest], Parent, Children) :- add_children(Rest, Parent, Children).
+
+add_children([Child|Rest], Parent, ChildrenAcc) :-
+  (   child(Child, Parent)
+  ->  writeln('That is impossible!')
+  ;   impossible_child(Child, Parent)
+  ->  writeln('That is impossible!')
+  ;   add_children(Rest, Parent, [Child|ChildrenAcc])
   ).
 
-% add add_children command here
+add_children([], _).
+add_children([Child|Rest], Parent) :-
+  ( 
+  \+ parent(Parent, Child)
+  -> assertz(parent(Parent, Child))
+  ;  true
+  ),
+  add_children(Rest, Parent).
 
 add_uncle(Uncle, NieceNephew) :-
   (   uncle(Uncle, NieceNephew)
   ->  writeln('That relationship already exists.')
+  ;   impossible_uncle(Uncle, NieceNephew)
+  ->  writeln('That is impossible!')
   ;   ( \+ male(Uncle) 
       -> assertz(male(Uncle))
       ;  true
@@ -166,6 +212,8 @@ add_uncle(Uncle, NieceNephew) :-
 add_aunt(Aunt, NieceNephew) :-
   (   aunt(Aunt, NieceNephew)
   ->  writeln('That relationship already exists.')
+  ;   impossible_aunt(Aunt, NieceNephew)
+  ->  writeln('That is impossible!')
   ;   ( \+ female(Aunt) 
       -> assertz(female(Aunt))
       ;  true

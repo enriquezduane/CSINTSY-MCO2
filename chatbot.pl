@@ -30,7 +30,6 @@ process_input(Input) :-
 % parses input into a list of words
 parse_input(Input, List) :-
   split_string(Input, " ?.,", "", List).
-  
 
 % query commands (query commands are placed before statement commands because of the way Prolog searches for predicates)
 execute_command(["is", Female, "a", "female?"]) :-
@@ -105,7 +104,7 @@ execute_command(["is", Aunt, "an", "aunt", "of", NieceNephew, ""]) :-
 execute_command(["is", Uncle, "an", "uncle", "of", NieceNephew, ""]) :-
   query_uncle(Uncle, NieceNephew), !.
 
-execute_command(["are", Relative1, "and", Relative2, "relatives?"]) :-
+execute_command(["are", Relative1, "and", Relative2, "relatives", ""]) :-
   query_relative(Relative1, Relative2), !.
 
 
@@ -165,7 +164,13 @@ execute_command([Child, "is", "a", "child", "of", Parent]) :-
 execute_command([Child, "is", "a", "child", "of", Parent, ""]) :-
   add_child(Child, Parent), !.
 
-% add add_children command here
+execute_command([First|Rest]) :-
+  append(Children, ["are", "children", "of", Parent], [First|Rest]),
+  add_children(Children, Parent, _), !.
+
+execute_command([First|Rest]) :-
+  append(Children, ["are", "children", "of", Parent, ""], [First|Rest]),
+  add_children(Children, Parent, _), !.
 
 execute_command([Daughter, "is", "a", "daughter", "of", Parent]) :-
   add_daughter(Daughter, Parent), !.
