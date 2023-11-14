@@ -110,32 +110,59 @@ execute_command(["are", Relative1, "and", Relative2, "relatives?"]) :-
 
 
 
-% statement commands
+% statement commands (2 instances of the comamnd for periods and no periods)
 execute_command([Sibling1, "and", Sibling2, "are", "siblings"]) :-
+  add_sibling(Sibling1, Sibling2), !.
+
+execute_command([Sibling1, "and", Sibling2, "are", "siblings", ""]) :-
   add_sibling(Sibling1, Sibling2), !.
 
 execute_command([Brother, "is", "a", "brother", "of", Sibling]) :-
   add_brother(Brother, Sibling), !.
 
+execute_command([Brother, "is", "a", "brother", "of", Sibling, ""]) :-
+  add_brother(Brother, Sibling), !.
+
 execute_command([Sister, "is", "a", "sister", "of", Sibling]) :-
+  add_sister(Sister, Sibling), !.
+
+execute_command([Sister, "is", "a", "sister", "of", Sibling, ""]) :-
   add_sister(Sister, Sibling), !.
 
 execute_command([Father, "is", "the", "father", "of", Child]) :-
   add_father(Father, Child), !.
 
+execute_command([Father, "is", "the", "father", "of", Child, ""]) :-
+  add_father(Father, Child), !.
+
 execute_command([Mother, "is", "the", "mother", "of", Child]) :-
+  add_mother(Mother, Child), !.
+
+execute_command([Mother, "is", "the", "mother", "of", Child, ""]) :-
   add_mother(Mother, Child), !.
 
 execute_command([Parent1, "and", Parent2, "are", "the", "parents", "of", Child]) :-
   add_parents(Parent1, Parent2, Child), !.
 
+execute_command([Parent1, "and", Parent2, "are", "the", "parents", "of", Child, ""]) :-
+  add_parents(Parent1, Parent2, Child), !. 
+
 execute_command([Grandmother, "is", "a", "grandmother", "of", Grandchild]) :-
+  add_grandmother(Grandmother, Grandchild), !.
+
+execute_command([Grandmother, "is", "a", "grandmother", "of", Grandchild, ""]) :-
   add_grandmother(Grandmother, Grandchild), !.
 
 execute_command([Grandfather, "is", "a", "grandfather", "of", Grandchild]) :-
   add_grandfather(Grandfather, Grandchild), !.
 
+execute_command([Grandfather, "is", "a", "grandfather", "of", Grandchild, ""]) :-
+  add_grandfather(Grandfather, Grandchild), !.
+
 execute_command([Child, "is", "a", "child", "of", Parent]) :-
+  add_child(Child, Parent), !.
+
+execute_command([Child, "is", "a", "child", "of", Parent, ""]) :-
   add_child(Child, Parent), !.
 
 % add add_children command here
@@ -143,13 +170,25 @@ execute_command([Child, "is", "a", "child", "of", Parent]) :-
 execute_command([Daughter, "is", "a", "daughter", "of", Parent]) :-
   add_daughter(Daughter, Parent), !.
 
+execute_command([Daughter, "is", "a", "daughter", "of", Parent, ""]) :-
+  add_daughter(Daughter, Parent), !.
+
 execute_command([Son, "is", "a", "son", "of", Parent]) :-
+  add_son(Son, Parent), !.
+
+execute_command([Son, "is", "a", "son", "of", Parent, ""]) :-
   add_son(Son, Parent), !.
 
 execute_command([Uncle, "is", "an", "uncle", "of", NieceNephew]) :-
   add_uncle(Uncle, NieceNephew), !.
 
+execute_command([Uncle, "is", "an", "uncle", "of", NieceNephew, ""]) :-
+  add_uncle(Uncle, NieceNephew), !.
+
 execute_command([Aunt, "is", "an", "aunt", "of", NieceNephew]) :-
+  add_aunt(Aunt, NieceNephew), !.
+
+execute_command([Aunt, "is", "an", "aunt", "of", NieceNephew, ""]) :-
   add_aunt(Aunt, NieceNephew), !.
 
 
