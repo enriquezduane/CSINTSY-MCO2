@@ -58,19 +58,21 @@ query_father(Father, Child) :-
 query_father(Child) :-
   (   father(Father, Child)
   ->  write('The father of '), write(Child), write(' is '), write(Father), writeln('.')
-  ;   write(Child), writeln(' does not have a father.')
+  ;   write('I do not know who the father of '), write(Child), writeln(' is.')
   ).
 
 query_parents(Parent1, Parent2, Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child), Parent1 \= Parent2
   ->  writeln('Yes, that is correct.')
-  ;   writeln('No, that is not correct.')
+  ;   write('I do not know who the mother of '), write(Child), writeln(' is.')
   ).
 
 query_parents(Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child), Parent1 \= Parent2
   ->  write('The parents of '), write(Child), write(' are '), write(Parent1), write(' and '), write(Parent2), writeln('.')
-  ;   write(Child), writeln(' does not have parents.')
+  ;   parent(Parent, Child)
+  -> write('The parents of '), write(Child), write(' is '), write(Parent), write(' and another person') , writeln('.')
+  ;  write('I do not know who the parents of '), write(Child), writeln(' are.')
   ).
 
 query_grandmother(Grandmother, Grandchild) :-

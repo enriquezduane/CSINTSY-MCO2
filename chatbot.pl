@@ -32,9 +32,6 @@ parse_input(Input, List) :-
   split_string(Input, " ?.,", "", List).
 
 % query commands (query commands are placed before statement commands because of the way Prolog searches for predicates)
-execute_command(["is", Female, "a", "female?"]) :-
-  query_male(Female), !. 
-  
 execute_command(["are", Sibling1, "and", Sibling2, "siblings", ""]) :-
   query_sibling(Sibling1, Sibling2), !.
 

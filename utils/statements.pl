@@ -31,7 +31,6 @@ add_brother(Brother, Sibling) :-
       -> assertz(sibling(Sibling, Brother))
       ;  true
       ),
-      assertz(brother(Brother, Sibling)), 
       writeln('OK! I learned something.')
   ).
 
@@ -52,7 +51,6 @@ add_sister(Sister, Sibling) :-
       -> assertz(sibling(Sibling, Sister))
       ;  true
       ),
-      assertz(sister(Sister, Sibling)), 
       writeln('OK! I learned something.')
   ).
 
@@ -69,26 +67,38 @@ add_father(Father, Child) :-
       -> assertz(parent(Father, Child))
       ;  true
       ),
-      assertz(father(Father, Child)), 
+      (  sibling(Child, Sibling), mother(Mother1, Child), mother(Mother2, Sibling), Mother1 \= Mother2
+      ->  ( \+ parent(Father, Sibling)
+          -> assertz(parent(Father, Sibling))
+          ;  true
+          )
+      ;   true
+      ), 
       writeln('OK! I learned something.')
   ).
 
 add_mother(Mother, Child) :-
-  (   mother(Mother, Child)
-  ->  writeln('That relationship already exists.')
-  ;   impossible_mother(Mother, Child)
-  ->  writeln('That is impossible!')
-  ;   ( \+ female(Mother) 
-      -> assertz(female(Mother))
-      ;  true
-      ),
-      ( \+ parent(Mother, Child) 
-      -> assertz(parent(Mother, Child))
-      ;  true
-      ),
-      assertz(mother(Mother, Child)), 
-      writeln('OK! I learned something.')
-  ).
+    (   mother(Mother, Child)
+    ->  writeln('That relationship already exists.')
+    ;   impossible_mother(Mother, Child)
+    ->  writeln('That is impossible!')
+    ;   ( \+ female(Mother)
+        -> assertz(female(Mother))
+        ;  true
+        ),
+        ( \+ parent(Mother, Child)
+        -> assertz(parent(Mother, Child))
+        ;  true
+        ),
+        (   sibling(Child, Sibling), father(Father1, Child), father(Father2, Sibling), Father1 \= Father2
+        ->  ( \+ parent(Mother, Sibling)
+            -> assertz(parent(Mother, Sibling))
+            ;  true
+            )
+        ;   true
+        ), 
+        writeln('OK! I learned something.')
+    ).
 
 add_parents(Parent1, Parent2, Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child)
@@ -139,7 +149,6 @@ add_daughter(Daughter, Parent) :-
       -> assertz(parent(Parent, Daughter))
       ;  true
       ),
-      assertz(daughter(Daughter, Parent)), 
       writeln('OK! I learned something.')
   ).
 
@@ -156,7 +165,6 @@ add_son(Son, Parent) :-
       -> assertz(parent(Parent, Son))
       ;  true
       ),
-      assertz(son(Son, Parent)),
       writeln('OK! I learned something.')
   ).
 
