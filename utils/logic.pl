@@ -16,9 +16,7 @@ sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.
 brother(X, Y) :- male(X), sibling(X, Y).
 sister(X, Y) :- female(X), sibling(X, Y).
 father(X, Y) :- male(X), parent(X, Y).
-father(X, Y) :- male(X), sibling(Y, Z), parent(X, Z), mother(C, Y), mother(V, Z), C \= V.
 mother(X, Y) :- female(X), parent(X, Y).
-mother(X, Y) :- female(X), sibling(Y, Z), parent(X, Z), father(C, Y), father(V, Z), C \= V.
 grandfather(X, Y) :- father(X, Z), parent(Z, Y).
 grandmother(X, Y) :- mother(X, Z), parent(Z, Y).
 child(X, Y) :- parent(Y, X).
@@ -27,7 +25,7 @@ daughter(X, Y) :- female(X), parent(Y, X).
 uncle(X, Y) :- brother(X, Z), parent(Z, Y).
 aunt(X, Y) :- sister(X, Z), parent(Z, Y).
 cousin(X, Y) :- parent(Z, X), sibling(Z, C), parent(C, Y).
-relative(X, Y) :- parent(X, Y) ; child(X, Y) ; sibling(X, Y) ; grandfather(X, Y) ; grandmother(X, Y) 
+relative(X, Y) :- parent(X, Y) ; child(X, Y) ; sibling(X, Y) ; grandfather(X, Y) ; grandmother(X, Y)
 ; uncle(X, Y) ; aunt(X, Y) ; cousin(X, Y).
 
 
