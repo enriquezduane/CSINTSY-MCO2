@@ -14,7 +14,7 @@ query_sibling(Sibling1, Sibling2) :-
   ).
 
 query_sibling(Sibling) :-
-  findall(Siblings, sibling(Siblings, Sibling), Siblings),
+  (setof(OtherSibling, sibling(Sibling, OtherSibling), Siblings) ; true),
   print_siblings(Siblings).
 
 query_sister(Sister, Sibling) :-
@@ -24,7 +24,7 @@ query_sister(Sister, Sibling) :-
   ).
 
 query_sister(Sibling) :-
-  findall(Sister, sister(Sister, Sibling), Sisters),
+  (setof(Sister, sister(Sister, Sibling), Sisters) ; true),
   print_sisters(Sisters).
   
 query_brother(Brother, Sibling) :-
@@ -34,7 +34,7 @@ query_brother(Brother, Sibling) :-
   ).
 
 query_brother(Sibling) :-
-  findall(Brother, brother(Brother, Sibling), Brothers),
+  (setof(Brother, brother(Brother, Sibling), Brothers) ; true),
   print_brothers(Brothers).
 
 query_mother(Mother, Child) :-
@@ -46,7 +46,7 @@ query_mother(Mother, Child) :-
 query_mother(Child) :-
   (   mother(Mother, Child)
   ->  write('The mother of '), write(Child), write(' is '), write(Mother), writeln('.')
-  ;   write(Child), writeln(' does not have a mother.')
+  ;   write('I do not know who the mother of '), write(Child), writeln(' is.')
   ).
 
 query_father(Father, Child) :-
@@ -64,7 +64,7 @@ query_father(Child) :-
 query_parents(Parent1, Parent2, Child) :-
   (   parent(Parent1, Child), parent(Parent2, Child), Parent1 \= Parent2
   ->  writeln('Yes, that is correct.')
-  ;   write('I do not know who the mother of '), write(Child), writeln(' is.')
+  ;   writeln('No, that is not correct.')
   ).
 
 query_parents(Child) :-
@@ -94,7 +94,7 @@ query_daughter(Daughter, Parent) :-
   ).
 
 query_daughter(Parent) :-
-  findall(Daughter, daughter(Daughter, Parent), Daughters),
+  (setof(Daughter, daughter(Daughter, Parent), Daughters) ; true),
   print_daughters(Daughters).
 
 query_son(Son, Parent) :-
@@ -104,7 +104,7 @@ query_son(Son, Parent) :-
   ).
 
 query_son(Parent) :-
-  findall(Son, son(Son, Parent), Sons),
+  (setof(Son, son(Son, Parent), Sons) ; true),
   print_sons(Sons).
 
 query_child(Child, Parent) :-
@@ -114,7 +114,7 @@ query_child(Child, Parent) :-
   ).
 
 query_child(Parent) :-
-  findall(Child, child(Child, Parent), Children),
+  (setof(Child, child(Child, Parent), Children) ; true),
   print_children(Children).
 
 query_child(Child1, Child2, Child3, Parent) :-

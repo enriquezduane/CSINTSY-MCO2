@@ -9,8 +9,11 @@ add_sibling(Sibling1, Sibling2) :-
   ->  writeln('That relationship already exists.')
   ;   impossible_sibling(Sibling1, Sibling2)
   ->  writeln('That is impossible!')
-  ;   assertz(sibling(Sibling1, Sibling2)), 
-      assertz(sibling(Sibling2, Sibling1)), 
+  ;   assertz(sibling(Sibling1, Sibling2)),
+      ( \+ sibling(Sibling2, Sibling1)
+      -> assertz(sibling(Sibling2, Sibling1))
+      ;  true
+      ),
       writeln('OK! I learned something.')
   ).
 
@@ -74,6 +77,11 @@ add_father(Father, Child) :-
           )
       ;   true
       ), 
+      ( \+ male(Father) 
+      -> assertz(male(Father))
+      ;  true
+      ),
+      (define_genders(Father) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -97,6 +105,7 @@ add_mother(Mother, Child) :-
             )
         ;   true
         ), 
+        (define_genders_from_mother(Mother) ; true),
         writeln('OK! I learned something.')
     ).
 
@@ -105,8 +114,14 @@ add_parents(Parent1, Parent2, Child) :-
   ->  writeln('That relationship already exists.')
   ;   impossible_parent(Parent1, Parent2, Child)
   ->  writeln('That is impossible!')
-  ;   assertz(parent(Parent1, Child)), 
-      assertz(parent(Parent2, Child)), 
+  ;   ( \+ parent(Parent1, Child)
+      -> assertz(parent(Parent1, Child))
+      ;  true
+      ),
+      ( \+ parent(Parent2, Child)
+      -> assertz(parent(Parent2, Child))
+      ;  true
+      ),
       writeln('OK! I learned something.')
   ).
 
@@ -229,3 +244,31 @@ add_aunt(Aunt, NieceNephew) :-
       assertz(aunt(Aunt, NieceNephew)), 
       writeln('OK! I learned something.')
   ).
+
+
+% helper definitions
+define_genders(Father) :-
+    male(Father),
+    findall(Mother, (parent(Father, Child), parent(Mother, Child), Mother \= Father, \+ female(Mother)), Mothers),
+    Mothers \= [], % Base case: stop if there are no more mothers
+    maplist(assert_as_female, Mothers),
+    maplist(define_genders_from_mother, Mothers).
+
+define_genders_from_mother(Mother) :-
+    female(Mother),
+    findall(Father, (parent(Mother, Child), parent(Father, Child), Father \= Mother, \+ male(Father)), Fathers),
+    Fathers \= [], % Base case: stop if there are no more fathers
+    maplist(assert_as_male, Fathers),
+    maplist(define_genders, Fathers).
+
+assert_as_male(Person) :-
+    ( \+ male(Person)
+    -> assertz(male(Person))
+    ;  true
+    ).
+
+assert_as_female(Person) :-
+    ( \+ female(Person)
+    -> assertz(female(Person))
+    ;  true
+    ).

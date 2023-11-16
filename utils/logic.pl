@@ -37,10 +37,10 @@ impossible_brother(X, Y) :- female(X) ; impossible_sibling(X, Y).
 
 impossible_sister(X, Y) :- male(X) ; impossible_sibling(X, Y).
 
-impossible_parent(X, Y) :- X = Y ; already_has_parents(Y) ; child(X, Y) ; sibling(X, Y) ; grandfather(X, Y) ; grandfather(Y, X) 
-; grandmother(X, Y) ; grandmother(Y, X) ; uncle(X, Y) ; uncle(Y, X) ; aunt(X, Y) ; aunt(Y, X).
+impossible_parent(X, Y) :- X = Y ; already_has_parents(Y, X) ; sibling_has_different_parents(X, Y) ; child(X, Y) ; sibling(X, Y) 
+; grandfather(X, Y) ; grandfather(Y, X); grandmother(X, Y) ; grandmother(Y, X) ; uncle(X, Y) ; uncle(Y, X) ; aunt(X, Y) ; aunt(Y, X).
 
-impossible_parent(X, Y, Z) :- X = Y ; impossible_parent(X, Z) ; impossible_parent(Y, Z).
+impossible_parent(X, Y, Z) :- X = Y ; already_has_parents(Z, Y, X) ; impossible_parent(X, Z) ; impossible_parent(Y, Z).
 
 impossible_father(X, Y) :- female(X) ; already_has_father(Y) ; impossible_parent(X, Y).
 
@@ -52,8 +52,9 @@ impossible_grandmother(X, Y) :- male(X) ; X = Y ; already_has_grandmothers(Y) ; 
 impossible_grandfather(X, Y) :- female(X) ; X = Y ; already_has_grandfathers(Y) ; unrelated_grandparent(X, Y) ; parent(X, Y) 
 ; child(X, Y) ; sibling(X, Y) ; grandfather(Y, X) ; uncle(X, Y) ; uncle(Y, X).
 
-impossible_child(X, Y) :- X = Y ; parent(X, Y) ; sibling(X, Y) ; grandfather(X, Y) ; grandfather(Y, X) 
-; grandmother(X, Y) ; grandmother(Y, X) ; uncle(X, Y) ; uncle(Y, X) ; aunt(X, Y) ; aunt(Y, X).
+impossible_child(X, Y) :- X = Y ; already_has_parents(X) ; sibling_has_different_parents(Y, X) ; parent(X, Y) ; sibling(X, Y) 
+; grandfather(X, Y) ; grandfather(Y, X) ; grandmother(X, Y) ; grandmother(Y, X) ; uncle(X, Y) ; uncle(Y, X) 
+; aunt(X, Y) ; aunt(Y, X).
 
 impossible_son(X, Y) :- female(X) ; impossible_child(X, Y).
 
@@ -77,6 +78,22 @@ different_parents(X, Y) :-
 already_has_parents(X) :-
 (   % X can not have a parent anymore if X already has two different parents
     parent(Parent1X, X), parent(Parent2X, X), Parent1X \= Parent2X
+).
+
+already_has_parents(X, Y) :-
+(   % X can not have a parent anymore if X already has two different parents and Y is not one of them
+    parent(Parent1X, X), parent(Parent2X, X), Parent1X \= Parent2X, Y \= Parent1X, Y \= Parent2X
+).
+
+already_has_parents(X, Y, Z) :-
+(   % X can not have two new parents if X already has one different parent
+    parent(ParentX, X), Y \= ParentX, Z \= ParentX
+).
+
+sibling_has_different_parents(X, Y) :- 
+(   % X can not be a parent of Y if Y has one defined parent that is not X and Y has a sibling with two different parents
+    parent(ParentY, Y), sibling(Y, Z), parent(Parent1Z, Z), parent(Parent2Z, Z), 
+    Parent1Z \= Parent2Z, ParentY \= Parent1Z, ParentY \= Parent2Z, X \= ParentY, X \= Parent1Z, X \= Parent2Z
 ).
 
 already_has_father(X) :-

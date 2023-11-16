@@ -31,7 +31,7 @@ process_input(Input) :-
 parse_input(Input, List) :-
   split_string(Input, " ?.,", "", List).
 
-% query commands (query commands are placed before statement commands because of the way Prolog searches for predicates)
+% query commands are placed before statement commands because of the way Prolog searches for predicates
 execute_command(["are", Sibling1, "and", Sibling2, "siblings", ""]) :-
   query_sibling(Sibling1, Sibling2), !.
 
@@ -105,8 +105,7 @@ execute_command(["are", Relative1, "and", Relative2, "relatives", ""]) :-
   query_relative(Relative1, Relative2), !.
 
 
-
-% statement commands (2 instances of the comamnd for periods and no periods)
+% statement commands with 2 instances of the commannd for periods and no periods
 execute_command([Sibling1, "and", Sibling2, "are", "siblings"]) :-
   add_sibling(Sibling1, Sibling2), !.
 
