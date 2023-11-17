@@ -37,6 +37,8 @@ add_brother(Brother, Sibling) :-
       -> assertz(sibling(Sibling, Brother))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Brother) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -57,6 +59,8 @@ add_sister(Sister, Sibling) :-
       -> assertz(sibling(Sibling, Sister))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Sister) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -80,11 +84,19 @@ add_father(Father, Child) :-
           )
       ;   true
       ), 
+      (   sibling(Child, Sibling), father(Father2, Sibling), mother(Mother, Sibling), Father \= Father2
+      ->  ( \+ parent(Mother, Child)
+          -> assertz(parent(Mother, Child))
+          ;  true
+          )
+      ;   true
+      ),
       ( \+ male(Father) 
       -> assertz(male(Father))
       ;  true
       ),
-      (define_genders(Father) ; true),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Father) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -108,7 +120,15 @@ add_mother(Mother, Child) :-
             )
         ;   true
         ), 
-        (define_genders_from_mother(Mother) ; true),
+        (   sibling(Child, Sibling), mother(Mother2, Sibling), father(Father, Sibling), Mother \= Mother2
+        ->  ( \+ parent(Father, Child)
+            -> assertz(parent(Father, Child))
+            ;  true
+            )
+        ;   true
+        ),
+        retractall(checked(_)),
+        (define_genders_from_neutral(Mother) ; true),
         writeln('OK! I learned something.')
     ).
 
@@ -125,18 +145,8 @@ add_parents(Parent1, Parent2, Child) :-
       -> assertz(parent(Parent2, Child))
       ;  true
       ),
-      ( male(Parent1)
-      -> (define_genders(Parent1) ; true)
-      ; female(Parent1)
-      -> (define_genders_from_mother(Parent1) ; true)
-      ; true
-      ),
-      ( male(Parent2)
-      -> (define_genders(Parent2) ; true)
-      ; female(Parent2)
-      -> (define_genders_from_mother(Parent2) ; true)
-      ; true
-      ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Parent1) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -150,6 +160,8 @@ add_grandmother(Grandmother, Grandchild) :-
       ;  true
       ),
       assertz(grandmother(Grandmother, Grandchild)), 
+      retractall(checked(_)),
+      (define_genders_from_neutral(Grandmother) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -163,6 +175,8 @@ add_grandfather(Grandfather, Grandchild) :-
       ;  true
       ),
       assertz(grandfather(Grandfather, Grandchild)), 
+      retractall(checked(_)),
+      (define_genders_from_neutral(Grandfather) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -179,6 +193,8 @@ add_daughter(Daughter, Parent) :-
       -> assertz(parent(Parent, Daughter))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Daughter) ; true),
       retractall(checked(_)),
       (define_genders_from_neutral(Parent) ; true),
       writeln('OK! I learned something.')
@@ -197,6 +213,8 @@ add_son(Son, Parent) :-
       -> assertz(parent(Parent, Son))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Son) ; true),
       retractall(checked(_)),
       (define_genders_from_neutral(Parent) ; true),
       writeln('OK! I learned something.')
@@ -217,16 +235,18 @@ add_child(Child, Parent) :-
   ).  
 
 add_children([], Parent, Children) :- 
-  add_children(Children, Parent),
-  writeln('OK! I learned something.').
+  member(Child, Children),
+  (   child(Child, Parent)
+  ->  writeln('That relationship already exists.')
+  ;   add_children(Children, Parent),
+      writeln('OK! I learned something.')
+  ).
 
 add_children([""|Rest], Parent, Children) :- add_children(Rest, Parent, Children).
 add_children(["and"|Rest], Parent, Children) :- add_children(Rest, Parent, Children).
 
 add_children([Child|Rest], Parent, ChildrenAcc) :-
-  (   child(Child, Parent)
-  ->  writeln('That is impossible!')
-  ;   impossible_child(Child, Parent)
+  (   impossible_child(Child, Parent)
   ->  writeln('That is impossible!')
   ;   add_children(Rest, Parent, [Child|ChildrenAcc])
   ).

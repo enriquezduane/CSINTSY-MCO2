@@ -295,7 +295,7 @@ execute_command(["quit"]) :-
 
 % if it could not identify the chat pattern, this will be executed
 execute_command(_) :-
-  writeln('I do not understand').
+  writeln('I do not understand.').
 
 
 % run the chatbot
