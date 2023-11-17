@@ -3,6 +3,9 @@
 add_mother/2, add_parents/3, add_grandmother/2, add_grandfather/2, add_child/2, add_children/3, add_children/2, 
 add_daughter/2, add_son/2, add_uncle/2, add_aunt/2]).
 
+:- dynamic checked /1.
+
+
 % statement definitions (Fix their logic by replacing the relationship condition used)
 add_sibling(Sibling1, Sibling2) :-
   (   sibling(Sibling1, Sibling2)
@@ -122,6 +125,18 @@ add_parents(Parent1, Parent2, Child) :-
       -> assertz(parent(Parent2, Child))
       ;  true
       ),
+      ( male(Parent1)
+      -> (define_genders(Parent1) ; true)
+      ; female(Parent1)
+      -> (define_genders_from_mother(Parent1) ; true)
+      ; true
+      ),
+      ( male(Parent2)
+      -> (define_genders(Parent2) ; true)
+      ; female(Parent2)
+      -> (define_genders_from_mother(Parent2) ; true)
+      ; true
+      ),
       writeln('OK! I learned something.')
   ).
 
@@ -164,6 +179,8 @@ add_daughter(Daughter, Parent) :-
       -> assertz(parent(Parent, Daughter))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Parent) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -180,6 +197,8 @@ add_son(Son, Parent) :-
       -> assertz(parent(Parent, Son))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Parent) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -192,6 +211,8 @@ add_child(Child, Parent) :-
       -> assertz(parent(Parent, Child))
       ;  true
       ),
+      retractall(checked(_)),
+      (define_genders_from_neutral(Parent) ; true),
       writeln('OK! I learned something.')
   ).  
 
@@ -247,19 +268,31 @@ add_aunt(Aunt, NieceNephew) :-
 
 
 % helper definitions
+define_genders_from_neutral(Parent) :-
+    \+ checked(Parent), % Skip if Parent has already been checked
+    assertz(checked(Parent)), % Mark Parent as checked
+    findall(OtherParent, (parent(Parent, Child), parent(OtherParent, Child)), Parents),
+    member(OtherParent, Parents),
+    (   male(OtherParent)
+    ->  (define_genders(OtherParent) ; false)
+    ;   female(OtherParent)
+    ->  (define_genders_from_mother(OtherParent) ; false)
+    ;   true
+    ),
+    maplist(define_genders_from_neutral, Parents).
+
 define_genders(Father) :-
     male(Father),
-    findall(Mother, (parent(Father, Child), parent(Mother, Child), Mother \= Father, \+ female(Mother)), Mothers),
-    Mothers \= [], % Base case: stop if there are no more mothers
+    findall(Mother, (parent(Father, Child), parent(Mother, Child), Mother \= Father, \+ female(Mother), \+ male(Mother)), Mothers),
     maplist(assert_as_female, Mothers),
     maplist(define_genders_from_mother, Mothers).
 
 define_genders_from_mother(Mother) :-
     female(Mother),
-    findall(Father, (parent(Mother, Child), parent(Father, Child), Father \= Mother, \+ male(Father)), Fathers),
-    Fathers \= [], % Base case: stop if there are no more fathers
+    findall(Father, (parent(Mother, Child), parent(Father, Child), Father \= Mother, \+ male(Father), \+ female(Father)), Fathers),
     maplist(assert_as_male, Fathers),
     maplist(define_genders, Fathers).
+
 
 assert_as_male(Person) :-
     ( \+ male(Person)

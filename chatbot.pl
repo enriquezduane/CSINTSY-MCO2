@@ -32,74 +32,169 @@ parse_input(Input, List) :-
   split_string(Input, " ?.,", "", List).
 
 % query commands are placed before statement commands because of the way Prolog searches for predicates
+execute_command(["Are", Sibling1, "and", Sibling2, "siblings", ""]) :-
+  query_sibling(Sibling1, Sibling2), !.
+
 execute_command(["are", Sibling1, "and", Sibling2, "siblings", ""]) :-
   query_sibling(Sibling1, Sibling2), !.
+
+
+execute_command(["Who", "are", "the", "siblings", "of", Sibling, ""]) :-
+  query_sibling(Sibling), !.
 
 execute_command(["who", "are", "the", "siblings", "of", Sibling, ""]) :-
   query_sibling(Sibling), !.
 
+
+execute_command(["Is", Sister, "a", "sister", "of", Sibling, ""]) :-
+  query_sister(Sister, Sibling), !.
+
 execute_command(["is", Sister, "a", "sister", "of", Sibling, ""]) :-
   query_sister(Sister, Sibling), !.
+
+
+execute_command(["Who", "are", "the", "sisters", "of", Sibling, ""]) :-
+  query_sister(Sibling), !.
 
 execute_command(["who", "are", "the", "sisters", "of", Sibling, ""]) :-
   query_sister(Sibling), !.
 
+
+execute_command(["Is", Brother, "a", "brother", "of", Sibling, ""]) :-
+  query_brother(Brother, Sibling), !.
+
 execute_command(["is", Brother, "a", "brother", "of", Sibling, ""]) :-
   query_brother(Brother, Sibling), !.
+
+
+execute_command(["Who", "are", "the", "brothers", "of", Sibling, ""]) :-
+  query_brother(Sibling), !.
 
 execute_command(["who", "are", "the", "brothers", "of", Sibling, ""]) :-
   query_brother(Sibling), !.
 
+
+execute_command(["Is", Mother, "the", "mother", "of", Child, ""]) :-
+  query_mother(Mother, Child), !.
+
 execute_command(["is", Mother, "the", "mother", "of", Child, ""]) :-
   query_mother(Mother, Child), !.
+
+
+execute_command(["Who", "is", "the", "mother", "of", Child, ""]) :-
+  query_mother(Child), !.
 
 execute_command(["who", "is", "the", "mother", "of", Child, ""]) :-
   query_mother(Child), !.
 
+
+execute_command(["Is", Father, "the", "father", "of", Child, ""]) :-
+  query_father(Father, Child), !.
+
 execute_command(["is", Father, "the", "father", "of", Child, ""]) :-
   query_father(Father, Child), !.
+
+
+execute_command(["Who", "is", "the", "father", "of", Child, ""]) :-
+  query_father(Child), !.  
 
 execute_command(["who", "is", "the", "father", "of", Child, ""]) :-
   query_father(Child), !.
 
+
+execute_command(["Are", Parent1, "and", Parent2, "the", "parents", "of", Child, ""]) :-
+  query_parents(Parent1, Parent2, Child), !. 
+
 execute_command(["are", Parent1, "and", Parent2, "the", "parents", "of", Child, ""]) :-
   query_parents(Parent1, Parent2, Child), !.  
+
+
+execute_command(["Who", "are", "the", "parents", "of", Child, ""]) :-
+  query_parents(Child), !.  
 
 execute_command(["who", "are", "the", "parents", "of", Child, ""]) :-
   query_parents(Child), !.
 
+
+execute_command(["Is", Grandmother, "a", "grandmother", "of", Grandchild, ""]) :-
+  query_grandmother(Grandmother, Grandchild), !.
+
 execute_command(["is", Grandmother, "a", "grandmother", "of", Grandchild, ""]) :-
   query_grandmother(Grandmother, Grandchild), !.
+
+
+execute_command(["Is", Grandfather, "a", "grandfather", "of", Grandchild, ""]) :-
+  query_grandfather(Grandfather, Grandchild), !.
 
 execute_command(["is", Grandfather, "a", "grandfather", "of", Grandchild, ""]) :-
   query_grandfather(Grandfather, Grandchild), !.
 
+
+execute_command(["Is", Daughter, "a", "daughter", "of", Parent, ""]) :-
+  query_daughter(Daughter, Parent), !.
+
 execute_command(["is", Daughter, "a", "daughter", "of", Parent, ""]) :-
   query_daughter(Daughter, Parent), !.
+
 
 execute_command(["who", "are", "the", "daughters", "of", Parent, ""]) :-
   query_daughter(Parent), !.
 
+execute_command(["who", "are", "the", "daughters", "of", Parent, ""]) :-
+  query_daughter(Parent), !.
+
+
+execute_command(["Is", Son, "a", "son", "of", Parent, ""]) :-
+  query_son(Son, Parent), !.
+
 execute_command(["is", Son, "a", "son", "of", Parent, ""]) :-
   query_son(Son, Parent), !.
+
+
+execute_command(["Who", "are", "the", "sons", "of", Parent, ""]) :-
+  query_son(Parent), !.
 
 execute_command(["who", "are", "the", "sons", "of", Parent, ""]) :-
   query_son(Parent), !.
 
+
+execute_command(["Is", Child, "a", "child", "of", Parent, ""]) :-
+  query_child(Child, Parent), !.
+
 execute_command(["is", Child, "a", "child", "of", Parent, ""]) :-
   query_child(Child, Parent), !.
+
+
+execute_command(["Who", "are", "the", "children", "of", Parent, ""]) :-
+  query_child(Parent), !.
 
 execute_command(["who", "are", "the", "children", "of", Parent, ""]) :-
   query_child(Parent), !.
 
+
+execute_command(["Are", Child1, "", Child2, "", "and", Child3, "children", "of", Parent, ""]) :-
+  query_child(Child1, Child2, Child3, Parent), !.
+
 execute_command(["are", Child1, "", Child2, "", "and", Child3, "children", "of", Parent, ""]) :-
   query_child(Child1, Child2, Child3, Parent), !.
+
+
+execute_command(["Is", Aunt, "an", "aunt", "of", NieceNephew, ""]) :-
+  query_aunt(Aunt, NieceNephew), !.
 
 execute_command(["is", Aunt, "an", "aunt", "of", NieceNephew, ""]) :-
   query_aunt(Aunt, NieceNephew), !.
 
+
+execute_command(["Is", Uncle, "an", "uncle", "of", NieceNephew, ""]) :-
+  query_uncle(Uncle, NieceNephew), !.
+
 execute_command(["is", Uncle, "an", "uncle", "of", NieceNephew, ""]) :-
   query_uncle(Uncle, NieceNephew), !.
+
+
+execute_command(["Are", Relative1, "and", Relative2, "relatives", ""]) :-
+  query_relative(Relative1, Relative2), !.
 
 execute_command(["are", Relative1, "and", Relative2, "relatives", ""]) :-
   query_relative(Relative1, Relative2), !.
