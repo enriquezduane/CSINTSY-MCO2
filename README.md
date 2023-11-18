@@ -17,3 +17,5 @@ Download and install Prolog from [here](https://www.swi-prolog.org/Download.html
 3. Type `swipl -s chatbot.pl`.
 
 Type `quit` to stop the program.
+
+docs
