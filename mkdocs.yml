@@ -1,0 +1,9 @@
+site_name: Prolog Family Tree Documentation
+nav:
+  - Home: index.md
+  - Files: 
+    - Logic: logic.md
+    - Statements: statements.md
+    - Questions: questions.md
+theme: readthedocs
+

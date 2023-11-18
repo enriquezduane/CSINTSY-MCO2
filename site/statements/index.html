@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Statements - Prolog Family Tree Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Statements";
+        var mkdocs_page_input_path = "statements.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Prolog Family Tree Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Files</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../logic/">Logic</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Statements</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#predicates">Predicates</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#module-and-dynamic-declarations">Module and Dynamic Declarations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#statement-definitions">Statement Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#helper-definitions">Helper Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#define_genders_from_neutralparent">define_genders_from_neutral(Parent)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#define_gendersfather">define_genders(Father)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#define_genders_from_mothermother">define_genders_from_mother(Mother)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#assert_as_maleperson-and-assert_as_femaleperson">assert_as_male(Person) and assert_as_female(Person)</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../questions/">Questions</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Prolog Family Tree Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Files</li>
+      <li class="breadcrumb-item active">Statements</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="statementspl"><code>statements.pl</code></h1>
+<p>This Prolog module is designed for managing and asserting various familial relationships. It provides predicates for adding relationships such as siblings, parents, children, and extended family members like uncles and aunts. The module also includes logic to check for inconsistencies or impossibilities in these relationships before asserting them.</p>
+<h2 id="predicates">Predicates</h2>
+<h3 id="module-and-dynamic-declarations">Module and Dynamic Declarations</h3>
+<ul>
+<li><strong>Module Declaration</strong>: <ul>
+<li><code>:- module(statements, [List of predicates]).</code> </li>
+<li>This line defines the <code>statements</code> module and exports a series of predicates that handle the addition of family relationships.</li>
+</ul>
+</li>
+<li><strong>Dynamic Declarations</strong>: <ul>
+<li><code>:- dynamic checked/1.</code> </li>
+<li>Allows the <code>checked</code> predicate to be dynamically updated, which is used in gender inference functions.</li>
+</ul>
+</li>
+</ul>
+<h3 id="statement-definitions">Statement Definitions</h3>
+<ol>
+<li>
+<p><strong><code>add_sibling(Sibling1, Sibling2)</code></strong></p>
+<ul>
+<li>Checks if <code>Sibling1</code> and <code>Sibling2</code> are already siblings. If yes, it prints that the relationship exists.</li>
+<li>If not, it checks if such a sibling relationship is logically impossible (e.g., due to contradictory relationships). If impossible, it indicates so.</li>
+<li>If neither of these conditions is met, it asserts <code>Sibling1</code> and <code>Sibling2</code> as siblings in both directions (<code>Sibling1</code> as a sibling of <code>Sibling2</code> and vice versa).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_brother(Brother, Sibling)</code></strong></p>
+<ul>
+<li>First, it checks if <code>Brother</code> is already a brother of <code>Sibling</code>. If this relationship exists or is impossible, it responds accordingly.</li>
+<li>If <code>Brother</code> is not known to be male, it asserts his gender.</li>
+<li>Then it ensures that both <code>Brother</code> and <code>Sibling</code> are marked as siblings of each other.</li>
+<li>Finally, it tries to define genders from neutral relatives if needed.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_sister(Sister, Sibling)</code></strong></p>
+<ul>
+<li>Similar to <code>add_brother</code>, but for establishing sister relationships. It asserts <code>Sister</code>'s gender as female if not already known.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_father(Father, Child)</code></strong></p>
+<ul>
+<li>Checks if <code>Father</code> is already the father of <code>Child</code>. If this relationship is established or impossible, it responds accordingly.</li>
+<li>Asserts <code>Father</code> as male and as the parent of <code>Child</code>.</li>
+<li>Additionally, it handles cases where siblings have different mothers or fathers, ensuring consistency in parental relationships.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_mother(Mother, Child)</code></strong></p>
+<ul>
+<li>Parallel to <code>add_father</code> but for mother relationships. It checks existing relationships, asserts gender, and handles complex family structures.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_parents(Parent1, Parent2, Child)</code></strong></p>
+<ul>
+<li>Verifies if <code>Parent1</code> and <code>Parent2</code> are already parents of <code>Child</code>. If the relationship exists or is impossible, it indicates so.</li>
+<li>Asserts both <code>Parent1</code> and <code>Parent2</code> as parents of <code>Child</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_grandmother(Grandmother, Grandchild)</code> &amp;  <code>add_grandfather(Grandfather, Grandchild)</code></strong></p>
+<ul>
+<li>These predicates add grandmother and grandfather relationships, respectively. They check for existing relationships or impossibilities, assert gender, and then establish the grandparent relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_daughter(Daughter, Parent)</code> &amp; <code>add_son(Son, Parent)</code></strong></p>
+<ul>
+<li>These predicates handle adding daughter or son relationships. They check for existing or impossible relationships, assert gender, and establish the parent-child relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_child(Child, Parent)</code></strong></p>
+<ul>
+<li>Checks if <code>Child</code> is already a child of <code>Parent</code>. If the relationship is established or impossible, it responds accordingly.</li>
+<li>Asserts the parent-child relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_children(Children, Parent)</code></strong></p>
+<ul>
+<li>Manages the addition of multiple children to a parent, handling each child individually. It processes lists, including handling special cases like empty strings or the word "and."</li>
+<li>Each child is individually checked and added as a child of the parent.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>add_uncle(Uncle, NieceNephew)</code> &amp; <code>add_aunt(Aunt, NieceNephew)</code></strong></p>
+<ul>
+<li>These predicates add uncle or aunt relationships</li>
+</ul>
+</li>
+</ol>
+<p>. They check for existing or impossible relationships, infer gender, and then assert the relationship.</p>
+<h3 id="helper-definitions">Helper Definitions</h3>
+<h3 id="define_genders_from_neutralparent"><code>define_genders_from_neutral(Parent)</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Infers and asserts the gender of parents whose gender is not yet defined.<ul>
+<li><strong>Check &amp; Mark</strong>: First, it checks if <code>Parent</code> has already been processed to avoid redundant checks. If not already checked, it marks <code>Parent</code> as checked.</li>
+<li><strong>Find Other Parents</strong>: Retrieves all co-parents of <code>Parent's</code> children.</li>
+<li><strong>Gender Inference</strong>:<ul>
+<li>If any co-parent is known to be male, it invokes <code>define_genders</code> for further inference.</li>
+<li>If a co-parent is female, it calls <code>define_genders_from_mother</code>.</li>
+<li>If gender is unknown, no action is taken for that co-parent.</li>
+</ul>
+</li>
+<li><strong>Recursive Call</strong>: Applies the same logic to all retrieved co-parents, ensuring comprehensive gender inference across the family tree.</li>
+</ul>
+</li>
+</ul>
+<h3 id="define_gendersfather"><code>define_genders(Father)</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Infers and asserts the gender of mothers related to a known male parent.<ul>
+<li><strong>Male Confirmation</strong>: Confirms that <code>Father</code> is male.</li>
+<li><strong>Find Mothers</strong>: Identifies all co-parents of <code>Father's</code> children who are not yet identified as male or female.</li>
+<li><strong>Assert Female</strong>: Asserts these co-parents as female.</li>
+<li><strong>Recursive Gender Inference</strong>: Calls <code>define_genders_from_mother</code> for each co-parent to further infer genders in the family tree.</li>
+</ul>
+</li>
+</ul>
+<h3 id="define_genders_from_mothermother"><code>define_genders_from_mother(Mother)</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Similar to <code>define_genders</code>, but starts with a known female parent and infers male gender for co-parents.<ul>
+<li><strong>Female Confirmation</strong>: Ensures that <code>Mother</code> is female.</li>
+<li><strong>Find Fathers</strong>: Identifies co-parents of <code>Mother's</code> children with an undefined gender.</li>
+<li><strong>Assert Male</strong>: Asserts these co-parents as male.</li>
+<li><strong>Recursive Gender Inference</strong>: Invokes <code>define_genders</code> for each male co-parent for further inference.</li>
+</ul>
+</li>
+</ul>
+<h3 id="assert_as_maleperson-and-assert_as_femaleperson"><code>assert_as_male(Person)</code> and <code>assert_as_female(Person)</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: These helper predicates assert a person as male or female, respectively, if their gender is not already defined.<ul>
+<li><strong>Check and Assert</strong>: Each predicate checks if the person's gender is not already defined. If undefined, it asserts the person as male or female.</li>
+<li><strong>No Redundancy</strong>: Ensures no redundant assertions are made if the gender is already known.</li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../logic/" class="btn btn-neutral float-left" title="Logic"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../questions/" class="btn btn-neutral float-right" title="Questions">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../logic/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../questions/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
