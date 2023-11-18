@@ -137,7 +137,7 @@ execute_command(["is", Daughter, "a", "daughter", "of", Parent, ""]) :-
   query_daughter(Daughter, Parent), !.
 
 
-execute_command(["who", "are", "the", "daughters", "of", Parent, ""]) :-
+execute_command(["Who", "are", "the", "daughters", "of", Parent, ""]) :-
   query_daughter(Parent), !.
 
 execute_command(["who", "are", "the", "daughters", "of", Parent, ""]) :-
