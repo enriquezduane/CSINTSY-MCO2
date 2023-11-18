@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
       <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>My Prolog Project Documentation</title>
+    <title>Prolog Family Tree Documentation</title>
     <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -30,7 +30,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-          <a href="." class="icon icon-home"> My Prolog Project Documentation
+          <a href="." class="icon icon-home"> Prolog Family Tree Documentation
         </a><div role="search">
   <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
@@ -42,12 +42,39 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
+    <li class="toctree-l2"><a class="reference internal" href="#how-it-works">How It Works</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#module-integration">Module Integration</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
+    <li class="toctree-l3"><a class="reference internal" href="#entry-point">Entry Point</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#main-loop">Main Loop</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#processing-user-input">Processing User Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#executing-commands">Executing Commands</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query-commands">Query Commands</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#statement-commands">Statement Commands</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#special-cases">Special Cases</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#helper-functions">Helper Functions</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Files</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="logic/">Logic</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="statements/">Statements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="questions/">Questions</a>
+                  </li>
               </ul>
       </div>
     </div>
@@ -56,7 +83,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
       <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href=".">My Prolog Project Documentation</a>
+          <a href=".">Prolog Family Tree Documentation</a>
         
       </nav>
       <div class="wy-nav-content">
@@ -72,24 +99,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
+                <h1 id="family-tree-chatbot">Family Tree Chatbot</h1>
+<h2 id="how-it-works">How It Works</h2>
+<p>The <code>chatbot.pl</code> file serves as the interactive interface. It integrates querying and statement functionalities, allowing users to both retrieve information about familial relationships and add new data to the system.</p>
+<h3 id="module-integration">Module Integration</h3>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
+<li><strong>Loading Modules</strong>: </li>
+<li><code>:- consult(utils/logic).</code></li>
+<li><code>:- use_module(utils/statements).</code></li>
+<li><code>:- use_module(utils/questions).</code></li>
+<li>These lines load the necessary modules for logic handling, statement processing, and query functionalities, making them accessible to the chatbot.</li>
 </ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
-</code></pre>
+<h3 id="entry-point">Entry Point</h3>
+<ul>
+<li><strong><code>start/0</code> Predicate</strong>:</li>
+<li>Initiates the chatbot, welcoming users and entering the main loop for command input and processing.</li>
+</ul>
+<h3 id="main-loop">Main Loop</h3>
+<ul>
+<li><strong><code>main_loop/0</code> Predicate</strong>:</li>
+<li>Manages the interactive session where user input is continuously read and processed until the user types "quit".</li>
+</ul>
+<h3 id="processing-user-input">Processing User Input</h3>
+<ul>
+<li><strong><code>process_input/1</code> Predicate</strong>:</li>
+<li>Parses the user input into a list of words and then executes the corresponding command.</li>
+<li><strong><code>parse_input/2</code> Predicate</strong>:</li>
+<li>Splits the input string into a list of words, facilitating further processing.</li>
+</ul>
+<h3 id="executing-commands">Executing Commands</h3>
+<ul>
+<li><strong><code>execute_command/1</code> Predicate</strong>:</li>
+<li>The core of the chatbot, where different commands are matched and executed.</li>
+<li>It handles a variety of commands related to querying and adding family relationships.</li>
+<li>The pattern matching in Prolog is utilized to identify and respond to specific user queries and statements.</li>
+</ul>
+<h3 id="query-commands">Query Commands</h3>
+<ul>
+<li><strong>Example</strong>: <code>execute_command(["Are", Sibling1, "and", Sibling2, "siblings", ""])</code>:</li>
+<li>This pattern matches a query about whether two individuals are siblings and calls <code>query_sibling/2</code> to verify this.</li>
+<li>Similar patterns are used for other family relationships like parent-child, siblings, and extended family members.</li>
+</ul>
+<h3 id="statement-commands">Statement Commands</h3>
+<ul>
+<li><strong>Example</strong>: <code>execute_command([Sibling1, "and", Sibling2, "are", "siblings"])</code>:</li>
+<li>Adds a sibling relationship between two individuals using <code>add_sibling/2</code>.</li>
+<li>Other patterns follow a similar logic for different types of familial relationships, such as adding parents, children, uncles, aunts, etc.</li>
+</ul>
+<h3 id="special-cases">Special Cases</h3>
+<ul>
+<li><strong>Quit Command</strong>: </li>
+<li>Handles the "quit" command to exit the chatbot.</li>
+<li><strong>Unrecognized Input</strong>:</li>
+<li>Provides a response for inputs that do not match any known pattern.</li>
+</ul>
+<h3 id="helper-functions">Helper Functions</h3>
+<ul>
+<li><strong><code>print_*</code> Functions</strong>: </li>
+<li>Assist in presenting query results in a readable format.</li>
+</ul>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="logic/" class="btn btn-neutral float-right" title="Logic">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
 
   <hr/>
 
@@ -112,6 +186,8 @@ docs/
     
     
     
+      <span><a href="logic/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
   </span>
 </div>
     <script src="js/jquery-3.6.0.min.js"></script>
@@ -130,5 +206,5 @@ docs/
 
 <!--
 MkDocs version : 1.5.3
-Build Date UTC : 2023-11-18 14:15:12.083711+00:00
+Build Date UTC : 2023-11-18 16:08:14.036137+00:00
 -->

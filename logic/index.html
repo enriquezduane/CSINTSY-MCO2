@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Logic - Prolog Family Tree Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Logic";
+        var mkdocs_page_input_path = "logic.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Prolog Family Tree Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Files</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Logic</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#predicates">Predicates</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#module-and-dynamic-declarations">Module and Dynamic Declarations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#direct-relationship-definitions">Direct Relationship Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#impossible-relationship-definitions">Impossible Relationship Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#helper-definitions">Helper Definitions</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../statements/">Statements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../questions/">Questions</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Prolog Family Tree Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Files</li>
+      <li class="breadcrumb-item active">Logic</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="logicpl"><code>logic.pl</code></h1>
+<p>This Prolog module, defines a set of predicates for modeling familial relationships and constraints on these relationships. It includes predicates for defining direct relationships (like parent, sibling, child), extended relationships (like uncle, aunt, cousin), and constraints for impossible relationships (to prevent logical inconsistencies).</p>
+<h2 id="predicates">Predicates</h2>
+<h3 id="module-and-dynamic-declarations">Module and Dynamic Declarations</h3>
+<ul>
+<li>
+<p><strong>Module Declaration</strong>: </p>
+<ul>
+<li><code>:- module(logic, [List of predicates]).</code> </li>
+<li>This line defines the <code>logic</code> module and exports the listed predicates so they can be used by other files.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dynamic Declarations</strong>: </p>
+<ul>
+<li><code>:- dynamic predicate_name/arity.</code> </li>
+<li>These lines allow for the addition or removal of facts from the database at runtime for the listed predicates.</li>
+</ul>
+</li>
+</ul>
+<h3 id="direct-relationship-definitions">Direct Relationship Definitions</h3>
+<ol>
+<li>
+<p><strong><code>sibling(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> and <code>Y</code> are siblings.</li>
+<li><strong>Definition</strong>: <code>X</code> and <code>Y</code> are siblings if they share a common parent and are not the same person (<code>X \= Y</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>brother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> is a brother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is a brother of <code>Y</code> if <code>X</code> is male and a sibling of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>sister(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies if <code>X</code> is a sister of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is a sister of <code>Y</code> if <code>X</code> is female and a sibling of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>father(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> is the father of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the father if <code>X</code> is male and a parent of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>mother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies if <code>X</code> is the mother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the mother of <code>Y</code> if <code>X</code> is female and a parent of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>grandfather(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> is the grandfather of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the grandfather of <code>Y</code> if <code>X</code> is the father of one of Y's parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>grandmother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> is the grandmother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the grandmother of <code>Y</code> if <code>X</code> is the mother of one of Y's parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>child(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> is a child of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is a child of <code>Y</code> if <code>Y</code> is a parent of <code>X</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>son(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> is the son of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the son of <code>Y</code> if <code>X</code> is male and a child of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>daughter(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> is the daughter of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the daughter of <code>Y</code> if <code>X</code> is female and a child of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>uncle(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies if <code>X</code> is the uncle of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the uncle of <code>Y</code> if <code>X</code> is a brother of one of Y's parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>aunt(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies if <code>X</code> is the aunt of <code>Y</code>.</li>
+<li><strong>Definition</strong>: <code>X</code> is the aunt of <code>Y</code> if <code>X</code> is a sister of one of Y's parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>cousin(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> and <code>Y</code> are cousins.</li>
+<li><strong>Definition</strong>: <code>X</code> and <code>Y</code> are cousins if a parent of <code>X</code> and a parent of <code>Y</code> are siblings.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>relative(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> and <code>Y</code> are relatives.</li>
+<li><strong>Definition</strong>: <code>X</code> and <code>Y</code> are considered relatives if they are connected through a parent, child, sibling, grandparent, uncle, aunt, or cousin relationship.</li>
+</ul>
+</li>
+</ol>
+<h3 id="impossible-relationship-definitions">Impossible Relationship Definitions</h3>
+<ol>
+<li>
+<p><strong><code>impossible_sibling(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines conditions where <code>X</code> and <code>Y</code> cannot logically be siblings.</li>
+<li><strong>Definition</strong>: Includes conditions like being the same person, having different parents, or existing parent/child relationships that contradict them being siblings.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_brother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies situations where <code>X</code> cannot be a brother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Applies if <code>X</code> is female or if <code>X</code> and <code>Y</code> meet the criteria of <code>impossible_sibling</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_sister(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines scenarios where <code>X</code> cannot be a sister of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Applies if <code>X</code> is male or if <code>X</code> and <code>Y</code> are <code>impossible_sibling</code>s.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_parent(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Establishes conditions where <code>X</code> cannot be a parent of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Includes being the same person, <code>Y</code> already having different parents, or other relationships that logically prevent a parent relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_parent(X, Y, Z)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Defines conditions where <code>X</code> and <code>Y</code> cannot both be parents of <code>Z</code>.</li>
+<li><strong>Definition</strong>: Considers cases like either parent being the same person as <code>Z</code>, or <code>Z</code> already having different parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_father(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Specifies when <code>X</code> cannot be the father of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Includes <code>X</code> being female, <code>Y</code> already having a father, or conditions met for <code>impossible_parent</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_mother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Identifies when <code>X</code> cannot be the mother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Covers <code>X</code> being male, <code>Y</code> already having a mother, or meeting <code>impossible_parent</code> criteria.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_grandmother(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Defines when <code>X</code> cannot be the grandmother of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Includes <code>X</code> being male, already having grandmothers, or other relationships that contradict a grandmother relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_grandfather(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Establishes when <code>X</code> cannot be the grandfather of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Criteria include <code>X</code> being female, already having grandfathers, or other contradictory relationships.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_child(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Details conditions where <code>X</code> cannot be a child of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Considerations include <code>X</code> being the same as <code>Y</code>, already having parents, or other relationships negating a child-parent relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_son(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines when <code>X</code> cannot be the son of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Criteria include <code>X</code> being female or conditions met for <code>impossible_child</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_daughter(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Specifies when <code>X</code> cannot be the daughter of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Includes <code>X</code> being male or meeting conditions of <code>impossible_child</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_uncle(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Defines conditions where <code>X</code> cannot be an uncle of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Includes <code>X</code> being female, being the same person as <code>Y</code>, or not being a brother to any of Y's parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>impossible_aunt(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Establishes when <code>X</code> cannot be an aunt of <code>Y</code>.</li>
+<li><strong>Definition</strong>: Criteria include <code>X</code> being male, being the same person as <code>Y</code>, or not being a sister to any of Y's parents.</li>
+</ul>
+</li>
+</ol>
+<h3 id="helper-definitions">Helper Definitions</h3>
+<ol>
+<li>
+<p><strong><code>different_parents(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> and <code>Y</code> do not share a single parent.</li>
+<li><strong>Definition</strong>: Considers <code>X</code> and <code>Y</code> to have different parents if no parent is shared between them.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_parents(X)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> already has two different parents.</li>
+<li><strong>Definition</strong>: True if <code>X</code> is recorded with two distinct parents in the database.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_parents(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> has two different parents, excluding <code>Y</code>.</li>
+<li><strong>Definition</strong>: True if <code>X</code> has two parents that are different from <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_parents(X, Y, Z)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> cannot have two new parents <code>Y</code> and <code>Z</code>.</li>
+<li><strong>Definition</strong>: True if <code>X</code> already has one parent different from <code>Y</code> and <code>Z</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>sibling_has_different_parents(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> cannot be a parent of <code>Y</code> based on siblings of <code>Y</code> with different parents.</li>
+<li><strong>Definition</strong>: True if <code>Y</code> has a sibling with different parents and <code>X</code> is not one of those parents.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_father(X)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> already has a father.</li>
+<li><strong>Definition</strong>: True if <code>X</code> is recorded with a father in the database.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_mother(X)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> already has a mother.</li>
+<li><strong>Definition</strong>: True if <code>X</code> is recorded with a mother in the database.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_grandmothers(X)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> already has two different grandmothers.</li>
+<li><strong>Definition</strong>: True if <code>X</code> has two distinct grandmothers recorded.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>already_has_grandfathers(X)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> already has two different grandfathers.</li>
+<li><strong>Definition</strong>: True if <code>X</code> has two distinct grandfathers recorded.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>unrelated_grandparent(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> cannot be a grandparent of <code>Y</code>.</li>
+<li><strong>Definition</strong>: True if the parents of <code>Y</code> are not children of <code>X</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>unrelated_uncle(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Checks if <code>X</code> cannot be an uncle of <code>Y</code>.</li>
+<li><strong>Definition</strong>: True if <code>X</code> is not a brother to any of the parents of <code>Y</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>unrelated_aunt(X, Y)</code></strong>:</p>
+<ul>
+<li><strong>Purpose</strong>: Determines if <code>X</code> cannot be an aunt of <code>Y</code>.</li>
+<li><strong>Definition</strong>: True if <code>X</code> is not a sister to any of the parents of <code>Y</code>.</li>
+</ul>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../statements/" class="btn btn-neutral float-right" title="Statements">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../statements/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

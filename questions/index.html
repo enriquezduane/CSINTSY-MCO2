@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Questions - Prolog Family Tree Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Questions";
+        var mkdocs_page_input_path = "questions.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Prolog Family Tree Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Files</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../logic/">Logic</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../statements/">Statements</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Questions</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#predicates">Predicates</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#module-and-dynamic-declarations">Module and Dynamic Declarations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query-definitions">Query Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#helper-definitions">Helper Definitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_siblings1">print_siblings/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_brothers1">print_brothers/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_sisters1">print_sisters/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_daughters1">print_daughters/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_sons1">print_sons/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_children1">print_children/1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#print_list1">print_list/1</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Prolog Family Tree Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Files</li>
+      <li class="breadcrumb-item active">Questions</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="questionspl"><code>questions.pl</code></h1>
+<p>This Prolog module is designed for querying and confirming various familial relationships. It provides predicates to inquire about relationships like siblings, parents, children, and extended family members. The module facilitates the validation of these relationships based on the data in the knowledge base.</p>
+<h2 id="predicates">Predicates</h2>
+<h3 id="module-and-dynamic-declarations">Module and Dynamic Declarations</h3>
+<ul>
+<li><strong>Module Declaration</strong>: <ul>
+<li><code>:- module(questions, [List of predicates]).</code> </li>
+<li>Defines the <code>questions</code> module, exporting predicates for querying family relationships.</li>
+</ul>
+</li>
+<li><strong>Use Module Logic</strong>: <ul>
+<li><code>:- use_module(logic).</code></li>
+<li>Integrates the <code>logic</code> module to utilize its defined relationships for queries.</li>
+</ul>
+</li>
+</ul>
+<h3 id="query-definitions">Query Definitions</h3>
+<ol>
+<li>
+<p><strong><code>query_sibling/2</code> &amp; <code>query_sibling/1</code></strong></p>
+<ul>
+<li>Confirms if two individuals are siblings (<code>query_sibling/2</code>) and lists all siblings of a given individual (<code>query_sibling/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_sister/2</code> &amp; <code>query_sister/1</code></strong></p>
+<ul>
+<li>Validates sister relationships between two individuals (<code>query_sister/2</code>) and lists all sisters of a specified sibling (<code>query_sister/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_brother/2</code> &amp; <code>query_brother/1</code></strong></p>
+<ul>
+<li>Checks brother relationships (<code>query_brother/2</code>) and enumerates all brothers of a given sibling (<code>query_brother/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_mother/2</code> &amp; <code>query_mother/1</code></strong></p>
+<ul>
+<li>Confirms if an individual is the mother of a child (<code>query_mother/2</code>) and identifies the mother of a specified child (<code>query_mother/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_father/2</code> &amp; <code>query_father/1</code></strong></p>
+<ul>
+<li>Verifies father-child relationships (<code>query_father/2</code>) and finds the father of a specific child (<code>query_father/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_parents/3</code> &amp; <code>query_parents/1</code></strong></p>
+<ul>
+<li>Validates the parentage of a child by two individuals (<code>query_parents/3</code>) and lists the parents of a given child (<code>query_parents/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_grandmother/2</code> &amp; <code>query_grandfather/2</code></strong></p>
+<ul>
+<li>Checks for grandmother and grandfather relationships with a grandchild, respectively.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_daughter/2</code> &amp; <code>query_daughter/1</code></strong></p>
+<ul>
+<li>Confirms if an individual is the daughter of a parent (<code>query_daughter/2</code>) and lists all daughters of a parent (<code>query_daughter/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_son/2</code> &amp; <code>query_son/1</code></strong></p>
+<ul>
+<li>Validates if an individual is the son of a parent (<code>query_son/2</code>) and enumerates all sons of a parent (<code>query_son/1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_child/2</code></strong>, <strong><code>query_child/1</code></strong>, &amp; <strong><code>query_child/4</code></strong></p>
+<ul>
+<li>Confirms child-parent relationships (<code>query_child/2</code>), lists all children of a parent (<code>query_child/1</code>), and validates multiple children of the same parent (<code>query_child/4</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_uncle/2</code> &amp; <code>query_aunt/2</code></strong></p>
+<ul>
+<li>Determines if an individual is an uncle or aunt to a niece or nephew.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>query_relative/2</code></strong></p>
+<ul>
+<li>Establishes if two individuals are related in any familial way defined in the knowledge base.</li>
+</ul>
+</li>
+</ol>
+<h3 id="helper-definitions">Helper Definitions</h3>
+<h3 id="print_siblings1"><code>print_siblings/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Displays a list of siblings or a message if there are none.<ul>
+<li><strong>Empty Case</strong>: When provided with an empty list (<code>[]</code>), it prints "There are no siblings."</li>
+<li><strong>Non-Empty Case</strong>: For a non-empty list, it prints "The siblings are:" followed by the list of siblings using <code>print_list</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_brothers1"><code>print_brothers/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Prints a list of brothers or a message indicating the absence of brothers.<ul>
+<li><strong>Empty Case</strong>: Prints "There are no brothers." for an empty list.</li>
+<li><strong>Non-Empty Case</strong>: Outputs "The brothers are:" and enumerates the brothers using <code>print_list</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_sisters1"><code>print_sisters/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Similar to <code>print_brothers</code>, but for listing sisters.<ul>
+<li><strong>Empty Case</strong>: Informs "There are no sisters." when there are no sisters in the list.</li>
+<li><strong>Non-Empty Case</strong>: Shows "The sisters are:" and the list of sisters.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_daughters1"><code>print_daughters/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Displays a list of daughters or a message if no daughters are found.<ul>
+<li><strong>Empty Case</strong>: States "There are no daughters." for an empty list.</li>
+<li><strong>Non-Empty Case</strong>: Announces "The daughters are:" followed by the list.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_sons1"><code>print_sons/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Works similarly to <code>print_daughters</code>, but for sons.<ul>
+<li><strong>Empty Case</strong>: Indicates "There are no sons." for an empty list.</li>
+<li><strong>Non-Empty Case</strong>: Proclaims "The sons are:" followed by the list of sons.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_children1"><code>print_children/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: Prints a list of children or notifies if there are none.<ul>
+<li><strong>Empty Case</strong>: Reports "There are no children." when the list is empty.</li>
+<li><strong>Non-Empty Case</strong>: Declares "The children are:" and then lists the children.</li>
+</ul>
+</li>
+</ul>
+<h3 id="print_list1"><code>print_list/1</code></h3>
+<ul>
+<li><strong>Purpose and Logic</strong>: General utility function for printing any list of items.<ul>
+<li><strong>Base Case</strong>: Does nothing for an empty list, effectively ending the recursion.</li>
+<li><strong>Recursive Case</strong>: Prints the head of the list (first element) followed by a newline, then recursively calls itself with the tail (remaining elements) of the list.</li>
+<li><strong>Formatting</strong>: Each item is printed with a hyphen (<code>-</code>) prefix for clear list formatting.</li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../statements/" class="btn btn-neutral float-left" title="Statements"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../statements/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
