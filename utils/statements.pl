@@ -258,6 +258,8 @@ add_children([Child|Rest], Parent) :-
   -> assertz(parent(Parent, Child))
   ;  true
   ),
+  retractall(checked(_)),
+  (define_genders_from_neutral(Parent) ; true),
   add_children(Rest, Parent).
 
 add_uncle(Uncle, NieceNephew) :-
@@ -270,6 +272,8 @@ add_uncle(Uncle, NieceNephew) :-
       ;  true
       ),
       assertz(uncle(Uncle, NieceNephew)), 
+      retractall(checked(_)),
+      (define_genders_from_neutral(Uncle) ; true),
       writeln('OK! I learned something.')
   ).
 
@@ -283,6 +287,8 @@ add_aunt(Aunt, NieceNephew) :-
       ;  true
       ),
       assertz(aunt(Aunt, NieceNephew)), 
+      retractall(checked(_)),
+      (define_genders_from_neutral(Aunt) ; true),
       writeln('OK! I learned something.')
   ).
 
